@@ -1,0 +1,11 @@
+
+
+/** *
+const gridTemplate = document
+.querySelector("#grid-template");
+.querySelector(".grid");
+
+
+const getGridElement = (data) => {
+  const GridElement = 
+  /*

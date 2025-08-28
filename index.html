@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="A travel blog exploring the diverse landscapes and cultures of the United States." />
+    <meta name="keywords" content="travel, USA, blog, adventure, culture, landscapes" />
+    <title>Around the US</title>
+    <link rel="stylesheet" href="pages/index.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+
+
+<body>
+    <header class="header">
+        <div class="header__wrapper">
+            <h1 class="header__title"><img src="images/logo.svg" alt="Logo" /></h1>
+        </div>
+        <div class="header__container">
+            <img src="images/Jacques Cousteau.png" alt="Jacques Cousteau" class="header__image" />
+            <div class="header__details">
+                <div class="header__info">
+                    <h2 class="header__subtitle" id="nameInput">Jacques Cousteau</h2>
+                    <p class="header__description" id="aboutInput"> Explorador</p>
+                </div>
+                <img src="images/edit icon.svg" alt="Editar" class="header__edit-icon" id="openForm" />
+            </div>
+            <img src="images/add icon.svg" alt="Más opciones" class="header__add-icon" />
+        </div>
+    </header>
+    <section class="grid">
+        <div>
+            <img src="images/Valle de Yosemite.png" alt="Valle de Yosemite" class="grid__image" />
+            <div class="grid__description">
+                <h3 class="grid__title">Valle de Yosemite</h3>
+                <div class="grid__icon" id="corazon"></div>
+            </div>
+        </div>
+        <div>
+            <img src="images/Lago de Louise.png" alt="Lago de Louise" class="grid__image" />
+            <div class="grid__description">
+                <h3 class="grid__title">Lago de Louise</h3>
+                <div class="grid__icon" id="1corazon"></div>
+            </div>
+        </div>
+        <div>
+            <img src="images/Montañas Calvas.png" alt="Montañas Calvas" class="grid__image" />
+            <div class="grid__description">
+                <h3 class="grid__title">Montañas Calvas</h3>
+                <div class="grid__icon" id="2corazon"></div>
+            </div>
+        </div>
+
+        <div>
+            <img src="images/Latemar.png" alt="Latemar" class="grid__image" />
+            <div class="grid__description">
+                <h3 class="grid__title">Latemar</h3>
+                <div class="grid__icon" id="3corazon"></div>
+            </div>
+        </div>
+        <div>
+            <img src="images/Vanois National.png" alt="Vanois National" class="grid__image" />
+            <div class="grid__description">
+                <h3 class="grid__title">Vanois National</h3>
+                <div class="grid__icon" id="corazon"></div>
+            </div>
+        </div>
+        <div>
+            <img src="images/Lago di Braies.png" alt="Lago di Braies" class="grid__image" />
+            <div class="grid__description">
+                <h3 class="grid__title">Lago di Braies</h3>
+                <div class="grid__icon" id="4corazon"></div>
+            </div>
+    </section>
+    <footer class="footer">
+        <p>© 2024 Around The U.S.</p>
+    </footer>
+    <form class="form" id="form">
+        <h2 class="form__title">Editar perfil</h2>
+        <label for="name" class="form__name"></label>
+        <input id="name" name="name" type="text" placeholder="Nombre" class="form__input" required />
+        <label for="about" class="form__about"></label>
+        <input id="about" name="about" placeholder="Acerca de mi" class="form__input" required></input>
+        <button type="submit" class="form__button" id="saveForm">Guardar</button>
+        <img src="images/Close Icon.svg" alt="Cerrar" class="form__close-icon" id="closeForm" />
+    </form>
+    
+    <template id="grid-template">
+        <div class="grid">
+            <img src="#" alt="" class="grid__image" />
+            <div class="grid__description">
+                <h3 class="grid__title"></h3>
+                <div class="grid__icon"></div>
+            </div>
+        </div>
+    </template>
+
+
+
+
+    <script src="script.js"></script>
+</body>
+
+</html>
