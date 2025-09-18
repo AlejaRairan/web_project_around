@@ -9,7 +9,6 @@
     <meta name="keywords" content="travel, USA, blog, adventure, culture, landscapes" />
     <title>Around the US</title>
     <link rel="stylesheet" href="pages/index.css" />
-/>
 
 </head>
 
@@ -27,52 +26,72 @@
                 </div>
                 <img src="images/edit icon.svg" alt="Editar" class="header__edit-icon" id="openForm" />
             </div>
-            <img src="images/add icon.svg" alt="Más opciones" class="header__add-icon" />
+            <img src="images/add icon.svg" alt="Más opciones" class="header__add-icon" id="addButton" />
         </div>
     </header>
-    <section class="grid">
-        <div>
+    <section class="grid__section">
+     <!--  <div>
+            <div class="grid__container">
             <img src="images/Valle de Yosemite.png" alt="Valle de Yosemite" class="grid__image" />
+            <div class="grid__delete-icon" id="deleteYosemite"></div>
+            </div>
             <div class="grid__description">
                 <h3 class="grid__title">Valle de Yosemite</h3>
                 <div class="grid__icon" id="corazon"></div>
+                
             </div>
         </div>
         <div>
+            <div class="grid__container">
             <img src="images/Lago de Louise.png" alt="Lago de Louise" class="grid__image" />
+            <div class="grid__delete-icon" id="deleteLouise"></div>
+            </div>
             <div class="grid__description">
                 <h3 class="grid__title">Lago de Louise</h3>
-                <div class="grid__icon" id="1corazon"></div>
+                <div class="grid__icon" id="corazonLouise"></div>
             </div>
         </div>
         <div>
+            <div class="grid__container">
             <img src="images/Montañas Calvas.png" alt="Montañas Calvas" class="grid__image" />
+            <div class="grid__delete-icon" id="deleteMontanasCalvas"></div>
+            </div>
             <div class="grid__description">
                 <h3 class="grid__title">Montañas Calvas</h3>
-                <div class="grid__icon" id="2corazon"></div>
+                <div class="grid__icon" id="corazonMontanasCalvas"></div>
             </div>
         </div>
 
         <div>
+            <div class="grid__container">
             <img src="images/Latemar.png" alt="Latemar" class="grid__image" />
+            <div class="grid__delete-icon" id="deleteLatemar"></div>
+            </div>
             <div class="grid__description">
                 <h3 class="grid__title">Latemar</h3>
-                <div class="grid__icon" id="3corazon"></div>
+                <div class="grid__icon" id="corazonLatemar"></div>
             </div>
         </div>
         <div>
+            <div class="grid__container">
             <img src="images/Vanois National.png" alt="Vanois National" class="grid__image" />
+            <div class="grid__delete-icon" id="deleteVanois"></div>
+            </div>
             <div class="grid__description">
                 <h3 class="grid__title">Vanois National</h3>
-                <div class="grid__icon" id="corazon"></div>
+                <div class="grid__icon" id="corazonVanois"></div>
             </div>
         </div>
         <div>
+            <div class="grid__container">
             <img src="images/Lago di Braies.png" alt="Lago di Braies" class="grid__image" />
+            <div class="grid__delete-icon" id="deleteBraies"></div>
+            </div>
             <div class="grid__description">
                 <h3 class="grid__title">Lago di Braies</h3>
-                <div class="grid__icon" id="4corazon"></div>
+                <div class="grid__icon" id="corazonBraies"></div>
             </div>
+            -->
     </section>
     <footer class="footer">
         <p>© 2024 Around The U.S.</p>
@@ -86,16 +105,35 @@
         <button type="submit" class="form__button" id="saveForm">Guardar</button>
         <img src="images/Close Icon.svg" alt="Cerrar" class="form__close-icon" id="closeForm" />
     </form>
-    
-    <template id="grid-template">
-        <div class="grid">
-            <img src="#" alt="" class="grid__image" />
+     <form class="form" id="formAdd">
+        <h2 class="form__title">Nuevo lugar</h2>
+        <label for="title" class="form__text"></label>
+        <input id="title" name="title" type="text" placeholder="Título" class="form__input" required />
+        <label for="link" class="form__link"></label>
+        <input id="link" name="link" placeholder="Enlace a la imagen" class="form__input" required></input>
+        <button type="submit" class="form__button" id="saveSecondForm">Crear</button>
+        <img src="images/Close Icon.svg" alt="Cerrar" class="form__close-icon" id="closeSecondForm"/>
+    </form>
+    <template id="gridTemplate">
+        <div class="grid__card">
+       <div class="grid__container">
+            <img src="" alt="" class="grid__image" />
+            <div class="grid__delete-icon"></div>
+        </div>
             <div class="grid__description">
                 <h3 class="grid__title"></h3>
                 <div class="grid__icon"></div>
             </div>
         </div>
     </template>
+     <div id="imageModal" class="modal">
+        <div class="modal__content">
+      <button id="closeModal" class="modal__close">&times;</button>
+      <img id="modalImg" class="modal__img" alt="">
+      <p id="modalCaption" class="modal__caption"></p>
+    </div>
+    
+  </div>
     <script src="./scripts/index.js"></script>
 </body>
 
