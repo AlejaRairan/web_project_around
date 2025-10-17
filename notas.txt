@@ -1,0 +1,23 @@
+artistInput.addEventListener("keydown", function (evt) {
+    if(evt.key === "Enter"){
+      addSong(artistInput.value, titleInput.value);
+      }
+});
+
+.form__input:invalid {
+  border-bottom: 1px solid red;
+}
+.form__input:valid {
+  border-bottom: 1px solid green;
+}
+.form__checkbox:checked + .form__checkbox-item {
+  background: #007DFF;
+}
+.form__checkbox:checked + .form__checkbox-item::before {
+  background: url(https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_checkbox.svg) center no-repeat;
+}
+
+
+display: flex;
+grid-template-columns: repeat 3,1fr;
+el segundo eje auto calcula 

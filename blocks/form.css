@@ -1,65 +1,101 @@
-.form{
+.form {
     flex-direction: column;
     background-color: white;
     color: black;
     width: 430px;
-    height: 300px;
+    height: auto;
     padding: 20px;
     display: none;
     position: absolute;
     top: 200px;
-    right: 280px;
+    right: 500px;
     border-radius: 10px;
 }
 
+.form__set {
+    display: flex;
+    flex-direction: column;
+}
 
-.form__title{
+.form__title {
     font-weight: 800;
 }
-.form__input{
+
+.form__input {
     margin-top: 10px;
     border-bottom: 1px solid black;
     border-top: none;
     border-left: none;
     border-right: none;
 }
+
+.form__input:invalid {
+    border-bottom: 1px solid red;
+}
+
+.form__input:valid {
+    border-bottom: 1px solid green;
+}
+
 .form__name,
 .form__text {
     margin-top: 10px;
-    
+    display: flex;
+    flex-direction: column;
+
 }
+
 .form__about,
 .form__link {
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
 }
-.form__button{
+
+.form__input-error {
+    color: red;
+    height: 14px;
+    margin-top: 5px;
+}
+.form__button {
     margin-top: 50px;
     padding: 15px;
     background-color: black;
     color: white;
 }
+
+.form__button_inactive {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .form__button:hover {
     opacity: 0.7;
 }
-.form-open{
+
+.form-open {
     display: flex;
 }
-.form__close-icon{
+
+.form__close-icon {
     cursor: pointer;
     position: absolute;
     top: -40px;
     right: -40px;
 }
+
 .form__close-icon:hover {
     opacity: 0.7;
 }
-@media screen and (min-width: 768px) and (max-width: 1024px){
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
     .form {
         height: auto;
         position: absolute;
         top: 100px;
     }
 }
+
 @media screen and (max-width: 767px) and (min-width: 55px) {
     .form {
         top: 100px;
@@ -67,6 +103,7 @@
         width: 300px;
     }
 }
+
 @media screen and (max-width: 766px) {
     .form {
         top: 100px;
