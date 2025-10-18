@@ -1,4 +1,5 @@
-//import { enableValidationvalid } from "./validate"; //
+import { enableValidation } from "./validate.js";
+
 const icon = document.querySelector("#openForm");
 const form = document.querySelector("#form");
 const close = document.querySelector("#closeForm");
@@ -17,7 +18,7 @@ const linkSecondForm = document.querySelector("#link");
 const Title = document.querySelector(".grid__title");
 const Image = document.querySelector(".grid__image");
 const likeIcon = document.querySelector(".grid__icon");
-const gridContainer = document.querySelector(".grid__section");
+const gridContainer = document.querySelector(".grid");
 const gridDelete = document.querySelectorAll(".grid__delete-icon");
 const gridTitle = document.querySelectorAll(".grid__title");
 
@@ -25,15 +26,24 @@ const gridTitle = document.querySelectorAll(".grid__title");
 //funcion que elimina la clase que muestra el formulario//
 const remove = () => {
   form.classList.remove("form-open");
-  console.log("funciona");
-  nameForm.setCustomValidity('');
+  const errorMessages = form.querySelectorAll(".form__input-error");
+  errorMessages.forEach((errorMessage) => {
+    errorMessage.textContent = "";
+  });
+  const inputElements = form.querySelectorAll(".form__input");
+  inputElements.forEach((inputElement) => {
+    inputElement.classList.remove("form__input_type_error");
+  });
+  form.reset();
 };
 
 
 icon.addEventListener("click", function () {
   form.classList.add("form-open");
-
+  nameForm.value = headerSubtitle.textContent;
+  aboutForm.value = headerDescription.textContent;
 });
+
 
 close.addEventListener("click", function () {
   console.log("click");
@@ -48,10 +58,6 @@ save.addEventListener("click", (e) => {
   remove();
 });
 
-nameForm.value = headerSubtitle.textContent;
-aboutForm.value = headerDescription.textContent;
-
-
 add.addEventListener("click", function () {
   secondForm.classList.add("form-open");
 });
@@ -59,7 +65,8 @@ add.addEventListener("click", function () {
 closeForm.addEventListener("click", function () {
   console.log("click");
   secondForm.classList.remove("form-open");
-});
+  secondForm.reset();
+  });
 
 const initialCards = [
   {
@@ -108,13 +115,11 @@ function addCard(gridImage, gridTitle) {
 initialCards.forEach(function (card) {
   addCard(card.link, card.name);
 });
+
 saveSecondForm.addEventListener("click", (e) => {
   e.preventDefault();
-  console.log(linkSecondForm);
-  console.log(linkSecondForm.value);
   addCard(linkSecondForm.value, nameSecondForm.value);
-  linkSecondForm.value = "";
-  nameSecondForm.value = "";
+  secondForm.reset(); 
   secondForm.classList.remove("form-open");
 });
 
@@ -148,80 +153,4 @@ document.addEventListener("keydown", function (evt) {
     modal.style.display = 'none';
   }
 });
-
-//validacion de formularios//
-
-//muestra el error
-const showInputError = (formElement, inputElement, errorMessage) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-input-error`);
-  inputElement.classList.add("form__input_type_error");
-  errorElement.textContent = errorMessage;
-  errorElement.classList.add("form__input-error_active");
-};
-
-//oculta el error 
-
-function hideInputError(formElement, inputElement) {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-input-error`);
-  inputElement.classList.remove("form__input_type_error");
-  errorElement.classList.remove("form__input-error_active");
-  errorElement.textContent = "";
-}
-
-//verificar la validez del input 
-
-const checkInputValidity = (formElement, inputElement) => {
-  if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage);
-  } else {
-    hideInputError(formElement, inputElement);
-  }
-};
-//Funcion que verifica si hay un input invalido
-
-const hasInvalidInput = (inputList) => {
-  return inputList.some((inputElement) => {
-    return !inputElement.validity.valid;
-  });
-};
-
-//funcion que cambia el estado del boton
-
-const toggleButtonState = (inputList, buttonElement) => {
-  console.log(hasInvalidInput(inputList));
-  if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add("form__button_inactive");
-    buttonElement.disabled = true;
-  } else {
-    buttonElement.classList.remove("form__button_inactive");
-    buttonElement.disabled = false;
-  }
-};
-
-//asigna los eventos de escucha a los inputs 
-
-const setEventListeners = (formElement) => {
-  const inputList = Array.from(formElement.querySelectorAll(".form__input"));
-  const buttonElement = formElement.querySelector(".form__submit");
-  toggleButtonState(inputList, buttonElement);
-
-  inputList.forEach((inputElement) => {
-    inputElement.addEventListener("input", function () {
-      checkInputValidity(formElement, inputElement);
-      toggleButtonState(inputList, buttonElement);
-    });
-  });
-}
-
-const enableValidation = () => {
-  const formList = Array.from(document.querySelectorAll(".form"));
-  formList.forEach((formElement) => {
-    formElement.addEventListener("submit", function (evt) {
-      evt.preventDefault();
-    });
-      setEventListeners(formElement);
-    });
-};
 enableValidation();
-
-

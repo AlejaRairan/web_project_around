@@ -29,7 +29,7 @@
     border-right: none;
 }
 
-.form__input:invalid {
+.form__input_type_error {
     border-bottom: 1px solid red;
 }
 

@@ -1,25 +1,76 @@
-//TODO: function tthat show an error 
+//validacion de formularios//
+
+//muestra el error
+const showInputError = (formElement, inputElement, errorMessage) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-input-error`);
+  inputElement.classList.add("form__input_type_error");
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add("form__input-error_active");
+};
+
+//oculta el error 
+
+function hideInputError(formElement, inputElement) {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-input-error`);
+  inputElement.classList.remove("form__input_type_error");
+  errorElement.classList.remove("form__input-error_active");
+  errorElement.textContent = "";
+}
+
+//verificar la validez del input 
+
+const checkInputValidity = (formElement, inputElement) => {
+  if (!inputElement.validity.valid) {
+    showInputError(formElement, inputElement, inputElement.validationMessage);
+  } else {
+    hideInputError(formElement, inputElement);
+  }
+};
+//Funcion que verifica si hay un input invalido
+
+const hasInvalidInput = (inputList) => {
+  return inputList.some((inputElement) => {
+    return !inputElement.validity.valid;
+  });
+};
+
+//funcion que cambia el estado del boton
+
+const toggleButtonState = (inputList, buttonElement) => {
+  console.log(hasInvalidInput(inputList));
+  if (hasInvalidInput(inputList)) {
+    buttonElement.classList.add("form__button_inactive");
+    buttonElement.disabled = true;
+  } else {
+    buttonElement.classList.remove("form__button_inactive");
+    buttonElement.disabled = false;
+  }
+};
+
+//asigna los eventos de escucha a los inputs 
+
+const setEventListeners = (formElement) => {
+  const inputList = Array.from(formElement.querySelectorAll(".form__input"));
+  const buttonElement = formElement.querySelector(".form__submit");
+  toggleButtonState(inputList, buttonElement);
+
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener("input", function () {
+      checkInputValidity(formElement, inputElement);
+      toggleButtonState(inputList, buttonElement);
+    });
+  });
+}
+
+export const enableValidation = () => {
+  const formList = Array.from(document.querySelectorAll(".form"));
+  formList.forEach((formElement) => {
+    formElement.addEventListener("submit", function (evt) {
+      evt.preventDefault();
+    });
+      setEventListeners(formElement);
+    });
+};
 
 
-//TODO: function taht hide an error 
 
-
-//TODO: function that validate if we have an error 
-
-//
-
-//export function enableValidation() {
-
-const form = document.querySelector('#myForm');
-
-// Limpia el estado de validación nativo
-form.querySelectorAll('input, select, textarea').forEach(el => {
-  el.setCustomValidity(''); // limpia errores personalizados
-  el.classList.remove('error', 'valid'); // o tus clases personalizadas
-});
-
-// También podés forzar que el form deje de mostrar errores
-form.noValidate = true;
-setTimeout(() => form.noValidate = false); // reactivarlo luego
-
- el.setCustomValidity(''); 
