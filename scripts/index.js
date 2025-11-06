@@ -1,26 +1,30 @@
-import { enableValidation } from "./validate.js";
+// Imports
+import { FormValidator } from "./formValidator.js";
+import { Card } from "./Card.js";
+import { closeModal } from "./utils.js";
+
+  // formularios y botones principales
 
 const icon = document.querySelector("#openForm");
 const form = document.querySelector("#form");
 const close = document.querySelector("#closeForm");
 const save = document.querySelector("#saveForm");
+  // inputs del formulario de perfil y los elementos del header donde se reflejan
+
 const headerSubtitle = document.querySelector("#nameInput");
 const headerDescription = document.querySelector("#aboutInput");
 const nameForm = document.querySelector("#name");
 const aboutForm = document.querySelector("#about");
-const iLike = document.querySelector("#corazon");
+
+  // formulario para añadir tarjetas (cards)
+
 const add = document.querySelector("#addButton");
 const secondForm = document.querySelector("#formAdd");
 const closeForm = document.querySelector("#closeSecondForm");
-const saveSecondForm = document.querySelector("#saveSecondForm");
-const nameSecondForm = document.querySelector("#title");
-const linkSecondForm = document.querySelector("#link");
-const Title = document.querySelector(".grid__title");
-const Image = document.querySelector(".grid__image");
-const likeIcon = document.querySelector(".grid__icon");
-const gridContainer = document.querySelector(".grid");
-const gridDelete = document.querySelectorAll(".grid__delete-icon");
-const gridTitle = document.querySelectorAll(".grid__title");
+
+  // modal de imagen
+
+const closeBtn = document.querySelector('#closeModal');
 
 
 //funcion que elimina la clase que muestra el formulario//
@@ -37,6 +41,7 @@ const remove = () => {
   form.reset();
 };
 
+//Evento de abrir formulario 
 
 icon.addEventListener("click", function () {
   form.classList.add("form-open");
@@ -44,11 +49,14 @@ icon.addEventListener("click", function () {
   aboutForm.value = headerDescription.textContent;
 });
 
+//Evento de cerrar formulario de perfil
 
 close.addEventListener("click", function () {
   console.log("click");
   remove();
 });
+
+//Evento de guardar cambios del formulario de perfil
 
 save.addEventListener("click", (e) => {
   e.preventDefault();
@@ -58,16 +66,20 @@ save.addEventListener("click", (e) => {
   remove();
 });
 
+//Evento de abrir formulario de nuevas tarjetas (cards)
+
 add.addEventListener("click", function () {
   secondForm.classList.add("form-open");
 });
+//Evento de cerrar formulario de nuevas tarjetas (cards)
 
 closeForm.addEventListener("click", function () {
   console.log("click");
   secondForm.classList.remove("form-open");
   secondForm.reset();
-  });
+});
 
+//Array de tarjetas iniciales
 const initialCards = [
   {
     name: "Valle de Yosemite",
@@ -95,62 +107,29 @@ const initialCards = [
   }
 ];
 
-function addCard(gridImage, gridTitle) {
-  const gridTemplate = document.querySelector("#gridTemplate").content;
-  const gridElement = gridTemplate.querySelector(".grid__card").cloneNode(true);
-  gridElement.querySelector(".grid__image").src = gridImage;
-  gridElement.querySelector(".grid__title").textContent = gridTitle;
-  gridElement.querySelector(".grid__image").alt = gridTitle;
-  gridElement.querySelector(".grid__icon").addEventListener("click", function (evt) {
-    evt.target.classList.toggle("grid__icon-active");
+//Agregar las tarjetas iniciales al DOM
+initialCards.forEach((item) => {
+  const card = new Card(item, "#gridTemplate");
+  const cardElement = card.generateCard();
 
-  });
-  gridElement.querySelector(".grid__delete-icon").addEventListener("click", function (evt) {
-    const card = evt.target.closest(".grid__card");
-    if (card) card.remove();
-  });
-  gridContainer.prepend(gridElement);
-}
-
-initialCards.forEach(function (card) {
-  addCard(card.link, card.name);
+  document.querySelector(".grid").append(cardElement);
 });
 
-saveSecondForm.addEventListener("click", (e) => {
-  e.preventDefault();
-  addCard(linkSecondForm.value, nameSecondForm.value);
-  secondForm.reset(); 
-  secondForm.classList.remove("form-open");
-});
-
-const images = document.querySelectorAll(".grid__image");
-const modal = document.querySelector("#imageModal");
-const modalImg = document.querySelector('#modalImg');
-const modalCaption = document.querySelector('#modalCaption');
-const closeBtn = document.querySelector('#closeModal');
-
-images.forEach((img) => {
-  img.addEventListener("click", (e) => {
-    modal.style.display = 'flex';
-    modalImg.src = img.src;
-    modalCaption.textContent = img.alt;
-  });
-});
-closeBtn.addEventListener('click', () => {
-  modal.style.display = 'none';
-});
-
-modal.addEventListener('click', (e) => {
-  if (e.target === modal) {
-    modal.style.display = 'none';
-  }
-});
 
 //para que se cierre con esc//
 
 document.addEventListener("keydown", function (evt) {
   if (evt.key === "Escape") {
-    modal.style.display = 'none';
+    closeModal();
   }
 });
-enableValidation();
+
+
+//inicializar el pop up de las imagenes
+closeBtn.addEventListener('click', closeModal);
+
+//validar formularios
+const formValidator1 = new FormValidator(form);
+formValidator1._enableValidation();
+const formValidator2 = new FormValidator(secondForm);
+formValidator2._enableValidation();
