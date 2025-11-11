@@ -79,6 +79,21 @@ closeForm.addEventListener("click", function () {
   secondForm.reset();
 });
 
+// cerrar el form de agregar 
+
+secondForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const name = secondForm.querySelector("#title").value;
+  const link = secondForm.querySelector("#link").value;
+
+  const card = new Card({ name, link }, "#gridTemplate");
+  const cardElement = card.generateCard();
+
+  document.querySelector(".grid").prepend(cardElement);
+   secondForm.classList.remove("form-open");
+});
+
 //Array de tarjetas iniciales
 const initialCards = [
   {
