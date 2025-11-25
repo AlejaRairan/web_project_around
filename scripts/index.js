@@ -2,6 +2,9 @@
 import { FormValidator } from "./formValidator.js";
 import { Card } from "./Card.js";
 import { closeModal } from "./utils.js";
+import { PopupwithForm } from "./PopupwithForm.js"; 
+import { Section } from "./Section.js";
+import { UserInfo } from "./userinfo.js"; 
 
   // formularios y botones principales
 
@@ -26,61 +29,74 @@ const closeForm = document.querySelector("#closeSecondForm");
 
 const closeBtn = document.querySelector('#closeModal');
 
+// Información de usuario
 
-//funcion que elimina la clase que muestra el formulario//
+const userInfo = new UserInfo({nameSelector: "#nameInput", aboutSelector: "#aboutInput"});
+userInfo.setUserInfo({name: "Alejandra", about: "Desarrolladora Web Junior"});
+
+
+// Manejar guardado del formulario de perfil
+const handleFormEdit = () => {
+  headerSubtitle.textContent = nameForm.value;
+  headerDescription.textContent = aboutForm.value;
+  userInfo.setUserInfo({ name: nameForm.value, about: aboutForm.value });
+  remove();
+};
+
+
+// Función para cerrar y limpiar el formulario de perfil
 const remove = () => {
   form.classList.remove("form-open");
+
   const errorMessages = form.querySelectorAll(".form__input-error");
   errorMessages.forEach((errorMessage) => {
     errorMessage.textContent = "";
   });
+
   const inputElements = form.querySelectorAll(".form__input");
   inputElements.forEach((inputElement) => {
     inputElement.classList.remove("form__input_type_error");
   });
+
   form.reset();
 };
 
-//Evento de abrir formulario 
 
+// Popup editar perfil
+const edit = new PopupwithForm(".form", handleFormEdit);
+edit.setEventListeners();
+
+// Popup agregar tarjeta
+const addForm = new PopupwithForm("#formAdd");
+addForm.setEventListeners();
+
+// Abrir formulario de editar perfil
 icon.addEventListener("click", function () {
-  form.classList.add("form-open");
+  edit.open();
   nameForm.value = headerSubtitle.textContent;
   aboutForm.value = headerDescription.textContent;
 });
 
-//Evento de cerrar formulario de perfil
-
-close.addEventListener("click", function () {
-  console.log("click");
-  remove();
-});
-
-//Evento de guardar cambios del formulario de perfil
-
-save.addEventListener("click", (e) => {
+// Guardar cambios del formulario de perfil
+form.addEventListener("submit", (e) => {
   e.preventDefault();
-  console.log(headerSubtitle)
-  headerSubtitle.textContent = nameForm.value;
-  headerDescription.textContent = aboutForm.value;
-  remove();
+  console.log(headerSubtitle);
 });
 
 //Evento de abrir formulario de nuevas tarjetas (cards)
 
+// Abrir formulario de nuevas tarjetas
 add.addEventListener("click", function () {
   secondForm.classList.add("form-open");
 });
-//Evento de cerrar formulario de nuevas tarjetas (cards)
 
+// Cerrar formulario de nuevas tarjetas
 closeForm.addEventListener("click", function () {
-  console.log("click");
   secondForm.classList.remove("form-open");
   secondForm.reset();
 });
 
-// cerrar el form de agregar 
-
+// Guardar nueva tarjeta
 secondForm.addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -91,7 +107,7 @@ secondForm.addEventListener("submit", function (e) {
   const cardElement = card.generateCard();
 
   document.querySelector(".grid").prepend(cardElement);
-   secondForm.classList.remove("form-open");
+  secondForm.classList.remove("form-open");
 });
 
 //Array de tarjetas iniciales
@@ -122,29 +138,23 @@ const initialCards = [
   }
 ];
 
-//Agregar las tarjetas iniciales al DOM
-initialCards.forEach((item) => {
+
+const section = new Section({items: initialCards, renderer: (item) => {
   const card = new Card(item, "#gridTemplate");
   const cardElement = card.generateCard();
-
-  document.querySelector(".grid").append(cardElement);
-});
-
-
-//para que se cierre con esc//
-
-document.addEventListener("keydown", function (evt) {
-  if (evt.key === "Escape") {
-    closeModal();
-  }
-});
+  section.addItem(cardElement);
+}},)
+section.renderItems();
 
 
-//inicializar el pop up de las imagenes
+
+
+// Cerrar modal de imagen
 closeBtn.addEventListener('click', closeModal);
 
 //validar formularios
 const formValidator1 = new FormValidator(form);
 formValidator1._enableValidation();
+
 const formValidator2 = new FormValidator(secondForm);
 formValidator2._enableValidation();

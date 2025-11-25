@@ -1,3 +1,6 @@
+
+import { PopupwithImage } from "./PopupwithImage.js";  
+
 export class Card {
     constructor(data, cardSelector) {
         this._name = data.name;
@@ -30,6 +33,8 @@ export class Card {
 
   
     _setEventListeners() {
+        const imagepopup = new PopupwithImage("#modalContainer");
+        imagepopup.setEventListeners();
         this._element.querySelector(".grid__icon").addEventListener("click", function (evt) {
             evt.target.classList.toggle("grid__icon-active");
         });
@@ -38,14 +43,11 @@ export class Card {
             const card = evt.target.closest(".grid__card");
             if (card) card.remove();
         });
+
         this._element.querySelector(".grid__image").addEventListener("click", () => {
             //abrir modal
-            const modal = document.querySelector("#modalContainer");
-            const modalImg = document.querySelector('#modalImg');
-            const modalCaption = document.querySelector('#modalCaption');
-            modalImg.src = this._link;
-            modalCaption.textContent = this._name;
-            modal.style.display = 'flex';
+      imagepopup.open({ link: this._link, name: this._name });
+
         });
     }
 }

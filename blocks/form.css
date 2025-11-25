@@ -74,7 +74,7 @@
 }
 
 .form-open {
-    display: flex;
+    display: flex !important;
 }
 
 .form__close-icon {
