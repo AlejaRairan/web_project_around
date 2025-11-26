@@ -2,10 +2,14 @@
     display: none;
     position: fixed;
     inset: 0;
+}
+
+.modal__overlay {
     background: rgba(0, 0, 0, 0.8);
+    display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    width: 100%;
 }
 
 .modal__content {

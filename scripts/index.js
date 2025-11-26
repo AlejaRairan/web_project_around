@@ -5,6 +5,7 @@ import { closeModal } from "./utils.js";
 import { PopupwithForm } from "./PopupwithForm.js"; 
 import { Section } from "./Section.js";
 import { UserInfo } from "./userinfo.js"; 
+import { PopupwithImage } from "./PopupwithImage.js";
 
   // formularios y botones principales
 
@@ -138,15 +139,17 @@ const initialCards = [
   }
 ];
 
-
+const imagePopup = new PopupwithImage("#modalContainer");
+imagePopup.setEventListeners();
 const section = new Section({items: initialCards, renderer: (item) => {
-  const card = new Card(item, "#gridTemplate");
+  const card = new Card(item, "#gridTemplate", () =>
+    imagePopup.open({ link: item.link, name: item.name })
+  );
+  
   const cardElement = card.generateCard();
   section.addItem(cardElement);
 }},)
 section.renderItems();
-
-
 
 
 // Cerrar modal de imagen

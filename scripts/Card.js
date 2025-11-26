@@ -2,10 +2,11 @@
 import { PopupwithImage } from "./PopupwithImage.js";  
 
 export class Card {
-    constructor(data, cardSelector) {
-        this._name = data.name;
-        this._link = data.link;
+    constructor({name, link }, cardSelector, handleCardClick) {
+        this._name = name;
+        this._link = link;
         this._cardSelector = cardSelector;
+        this._handleCardClick = handleCardClick;
     }
     //clone template
     _getTemplate() {
@@ -33,8 +34,6 @@ export class Card {
 
   
     _setEventListeners() {
-        const imagepopup = new PopupwithImage("#modalContainer");
-        imagepopup.setEventListeners();
         this._element.querySelector(".grid__icon").addEventListener("click", function (evt) {
             evt.target.classList.toggle("grid__icon-active");
         });
@@ -44,13 +43,12 @@ export class Card {
             if (card) card.remove();
         });
 
-        this._element.querySelector(".grid__image").addEventListener("click", () => {
-            //abrir modal
-      imagepopup.open({ link: this._link, name: this._name });
-
-        });
+        this._element.querySelector(".grid__image")
+    .addEventListener("click", () => {
+        this._handleCardClick();
+    });
     }
 }
-
+ 
 
 //metodo que elimine una card
