@@ -2,11 +2,12 @@
 import { PopupwithImage } from "./PopupwithImage.js";  
 
 export class Card {
-    constructor({name, link }, cardSelector, handleCardClick) {
+    constructor({name, link }, cardSelector, handleCardClick, handleDeleteClick) {
         this._name = name;
         this._link = link;
         this._cardSelector = cardSelector;
         this._handleCardClick = handleCardClick;
+        this._handleDeleteClick = handleDeleteClick.bind(this);
     }
     //clone template
     _getTemplate() {
@@ -37,8 +38,15 @@ export class Card {
         this._element.querySelector(".grid__icon").addEventListener("click", function (evt) {
             evt.target.classList.toggle("grid__icon-active");
         });
+        //metodo boton de la basura
 
         this._element.querySelector(".grid__delete-icon").addEventListener("click", function (evt) {
+            this._handleDeleteClick();
+        });
+
+        //metodo que borra la card al confirmar
+
+        document.querySelector(".confirmation__button").addEventListener("click", function (evt) {
             const card = evt.target.closest(".grid__card");
             if (card) card.remove();
         });

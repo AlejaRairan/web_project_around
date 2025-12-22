@@ -18,15 +18,17 @@
             <h1 class="header__title"><img src="images/logo.svg" alt="Logo" /></h1>
         </div>
         <div class="header__container">
-            <img src="images/JacquesCousteau.png" alt="Jacques Cousteau" class="header__image"/>
+            <div class="header__avatar-container">
+                <img src="images/JacquesCousteau.png" alt="Jacques Cousteau" class="header__image avatar__edit-icon" id="editAvatar" />
+            </div>
             <div class="header__details">
                 <div class="header__info">
                     <h2 class="header__subtitle" id="nameInput"></h2>
                     <p class="header__description" id="aboutInput"></p>
                 </div>
-                <img src="images/editicon.svg" alt="Editar" class="header__edit-icon" id="openForm"/>
+                <img src="images/editicon.svg" alt="Editar" class="header__edit-icon" id="openForm" />
             </div>
-            <img src="images/addicon.svg" alt="Más opciones" class="header__add-icon" id="addButton"/>
+            <img src="images/addicon.svg" alt="Más opciones" class="header__add-icon" id="addButton" />
         </div>
     </header>
     <section class="grid">
@@ -34,18 +36,30 @@
     <footer class="footer">
         <p>© 2024 Around The U.S.</p>
     </footer>
+
+    <form class="form" id="avatarForm" novalidate>
+        <fieldset class="form__set">
+            <h2 class="form__avatar">Cambiar foto de perfil</h2>
+            <div>
+                <input type="url" placeholder="Enlace de la imagen" class="form__input" id="avatarInput" />
+                <button type="submit" class="form__submit form__button" id="saveAvatar">Guardar</button>
+                <img src="images/CloseIcon.svg" alt="Cerrar" class="form__close-icon" id="closeAvatarForm" />
+            </div>
+        </fieldset>
+    </form>
+
     <form class="form" id="form" novalidate>
-       <fieldset class="form__set">
+        <fieldset class="form__set">
             <h2 class="form__title">Editar perfil</h2>
             <label for="name" class="form__name">
-            <input id="name" name="name" type="text" placeholder="Nombre" class="form__input" required minlength="2"
-                maxlength="40"/>
-            <span class="name-input-error form__input-error"></span>
+                <input id="name" name="name" type="text" placeholder="Nombre" class="form__input" required minlength="2"
+                    maxlength="40" />
+                <span class="name-input-error form__input-error"></span>
             </label>
             <label for="about" class="form__about">
-            <input id="about" name="about" placeholder="Acerca de mi" class="form__input" minlength="2" maxlength="40"
-                required>
-            <span class="about-input-error form__input-error"></span>
+                <input id="about" name="about" placeholder="Acerca de mi" class="form__input" minlength="2"
+                    maxlength="40" required>
+                <span class="about-input-error form__input-error"></span>
             </label>
             <button type="submit" class="form__submit form__button" id="saveForm">Guardar</button>
             <img src="images/CloseIcon.svg" alt="Cerrar" class="form__close-icon" id="closeForm" />
@@ -79,14 +93,19 @@
         </div>
     </template>
     <div id="modalContainer" class="modal">
-    <div class="modal__overlay">
-        <div class="modal__content">
-            <button id="closeModal" class="form__close-icon modal__close">&times;</button>
-            <img src= "" id="modalImg" class="modal__img" alt="">
-            <p id="modalCaption" class="modal__caption"></p>
+        <div class="modal__overlay">
+            <div class="modal__content">
+                <button id="closeModal" class="form__close-icon modal__close">&times;</button>
+                <img src="" id="modalImg" class="modal__img" alt="">
+                <p id="modalCaption" class="modal__caption"></p>
+            </div>
         </div>
     </div>
 
+    <div class="confirmation__container">   
+       <h2 class="confirmation__tittle">¿Estás seguro/a?</h2>
+       <button id="confirmDelete" class="confirmation__button form__submit">Sí</button>
+       <img src="images/CloseIcon.svg" alt="Cerrar" class="form__close-icon confirmation__closing-button" id="closeConfirmIcon" />
     </div>
     <script type="module" src="./scripts/index.js"></script>
 
