@@ -3,6 +3,7 @@ import { Popup } from "./Popup.js";
 export class PopupwithConfirmation extends Popup {
     constructor(popupSelector) {
         super(popupSelector);
+        this._confirmButton = this._popup.querySelector(".confirmation__button");
     }
     open() {
         super.open();
@@ -10,5 +11,12 @@ export class PopupwithConfirmation extends Popup {
     
     close() {
         super.close();
+    }
+    setEventListeners() {
+        super.setEventListeners();
+
+        this._confirmButton.addEventListener("click", () => {
+            this.close();    
+        });
     }
 }

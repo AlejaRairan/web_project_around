@@ -116,8 +116,9 @@ closeForm.addEventListener("click", function () {
   secondForm.reset();
 });
 
-// instancia popup cofirmation
+// instancia popup confirmation
 const formValidator3 = new PopupwithConfirmation(".confirmation__container");
+formValidator3.setEventListeners();
 
 // Guardar nueva tarjeta
 secondForm.addEventListener("submit", function (e) {
@@ -132,8 +133,6 @@ secondForm.addEventListener("submit", function (e) {
   document.querySelector(".grid").prepend(cardElement);
   secondForm.classList.remove("form-open");
 });
-
-
 
 
 //Array de tarjetas iniciales
@@ -166,6 +165,11 @@ const initialCards = [
 
 const imagePopup = new PopupwithImage("#modalContainer");
 imagePopup.setEventListeners();
+
+const handleDeleteClick = (cardInstance) => {
+    formValidator3.open(cardInstance);
+};
+
 
 api.loadCard().then((initialCards) => {
   console.log(initialCards);
