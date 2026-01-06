@@ -1,157 +1,157 @@
 .header {
-    margin: 20px 100px;
+  margin: 20px 100px;
 }
 
 .header__wrapper {
-    border-bottom: 1px solid white;
+  border-bottom: 1px solid white;
 }
 
 .header__title {
-    font-size: 40px;
+  font-size: 40px;
 }
 
 .header__small-text {
-    position: absolute;
-    font-size: 15px;
+  position: absolute;
+  font-size: 15px;
 }
 
 .header__container {
-    display: flex;
-    align-items: center;
-    padding: 60px 0 50px;
-    gap: 20px;
+  display: flex;
+  align-items: center;
+  padding: 60px 0 50px;
+  gap: 20px;
 }
 
 .header__details {
-    display: flex;
-    gap: 20px;
+  display: flex;
+  gap: 20px;
 }
 
 .header__image {
-    border-radius: 50%;
-    width: 160px;
-    position: relative;
+  border-radius: 50%;
+  width: 160px;
+  position: relative;
 }
 
 .header__description {
-    font-size: 14px;
-    list-style: none;
+  font-size: 14px;
+  list-style: none;
 }
 
 .header__subtitle {
-    font-size: 40px;
-    font-weight: bold;
-    margin: 0;
-
+  font-size: 40px;
+  font-weight: bold;
+  margin: 0;
 }
 
 .header__edit-icon {
-    border: 1px solid white;
-    cursor: pointer;
-    width: 30px;
-    height: 30px;
-    margin-bottom: 40px;
+  border: 1px solid white;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 40px;
 }
 
 .header__avatar-container {
   position: relative;
-  
 }
 
 .header__avatar-container::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
   opacity: 0;
   transition: opacity 0.3s ease;
-  background-image: url(../images/editicon.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-
 }
 
 .header__avatar-container:hover::after {
   opacity: 1;
 }
 
+.header__avatar-icon {
+  position: absolute;
+  z-index: 1000;
+  left: 70px;
+  bottom: 65px;
+}
+
 .header__add-icon {
-    margin-bottom: 40px;
-    border: 1px solid white;
-    cursor: pointer;
-    width: 100%;
-    height: 40px;
-    margin-left: auto;
+  margin-bottom: 40px;
+  border: 1px solid white;
+  cursor: pointer;
+  width: 100%;
+  height: 40px;
+  margin-left: auto;
 }
 
 .header__add-icon:hover,
 .header__edit-icon:hover {
-    opacity: 0.7;
+  opacity: 0.7;
 }
 
-
 @media screen and (min-width: 768px) and (max-width: 1024px) {
-    .header {
-        margin: 20px 50px;
-    }
+  .header {
+    margin: 20px 50px;
+  }
 
-    .header__wrapper {
-        padding: 20px 560px 20px 0;
-    }
+  .header__wrapper {
+    padding: 20px 560px 20px 0;
+  }
 }
 
 @media screen and (min-width: 767px) {
-    .header__add-icon {
-        max-width: 150px;
-    }
+  .header__add-icon {
+    max-width: 150px;
+  }
 
-    .header__edit-icon {
-        margin-top: 10px;
-    }
+  .header__edit-icon {
+    margin-top: 10px;
+  }
 }
 
 @media screen and (min-width: 767px) and (max-width: 872px) {
-    .header__edit-icon {
-        margin-top: 10px;
-    }
+  .header__edit-icon {
+    margin-top: 10px;
+  }
 
-    .header__subtitle {
-        font-size: 30px;
-    }
+  .header__subtitle {
+    font-size: 30px;
+  }
 }
 
 @media screen and (max-width: 767px) {
-    .header {
-        margin: 20px;
-    }
+  .header {
+    margin: 20px;
+  }
 
-    .header__container {
-        padding: 20px 0;
-        flex-direction: column;
-    }
+  .header__container {
+    padding: 20px 0;
+    flex-direction: column;
+  }
 
-    .header__wrapper {
-        padding: 20px 180px 20px 0;
-    }
+  .header__wrapper {
+    padding: 20px 180px 20px 0;
+  }
 
-    .header__title {
-        font-size: 25px;
-    }
+  .header__title {
+    font-size: 25px;
+  }
 
-    .header__subtitle {
-        font-size: 20px;
-    }
+  .header__subtitle {
+    font-size: 20px;
+  }
 
-    .header__description {
-        font-size: 15px;
-    }
+  .header__description {
+    font-size: 15px;
+  }
 
-    .header__image {
-        width: 120px;
-        height: 120px;
-    }
+  .header__image {
+    width: 120px;
+    height: 120px;
+  }
 
-    .header__add-icon {
-        padding: 15px 0;
-    }
+  .header__add-icon {
+    padding: 15px 0;
+  }
 }

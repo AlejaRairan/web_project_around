@@ -4,7 +4,7 @@ import { Card } from "./Card.js";
 import { closeModal } from "./utils.js";
 import { PopupwithForm } from "./PopupwithForm.js";
 import { Section } from "./Section.js";
-import { UserInfo } from "./Userinfo.js";
+import { UserInfo } from "./userinfo.js";
 import { PopupwithImage } from "./PopupwithImage.js";
 import { api } from "./api.js";
 import { PopupwithConfirmation } from "./PopupwithConfirmation.js";
@@ -31,6 +31,8 @@ const closeForm = document.querySelector("#closeSecondForm");
 //formulario de cambiar imagen
 const editAvatar = document.querySelector("#editAvatar");
 const openAvatarForm = document.querySelector("#avatarForm");
+let userId;
+let selectedCard = null;
 
 // modal de imagen
 
@@ -42,21 +44,68 @@ const userInfo = new UserInfo({
   nameSelector: "#nameInput",
   aboutSelector: "#aboutInput",
 });
+
 api.getUserInfo().then((user) => {
-  userInfo.setUserInfo({ name: user.name, about: user.about });
+  userId = user._id;
+  userInfo.setUserInfo({
+    name: user.name,
+    about: user.about,
+  });
+  document.querySelector(".header__image").src = user.avatar;
 });
 
 // Manejar guardado del formulario de perfil
-const handleFormEdit = () => {
-  headerSubtitle.textContent = nameForm.value;
-  headerDescription.textContent = aboutForm.value;
-  userInfo.setUserInfo({ name: nameForm.value, about: aboutForm.value });
-  remove();
+const handleFormEdit = (formData) => {
+  api
+    .createDescription(formData)
+    .then((data) => {
+      headerSubtitle.textContent = data.name;
+      headerDescription.textContent = data.about;
+      userInfo.setUserInfo({
+        name: data.name,
+        about: data.about,
+      });
+      remove(); // cerrar popup SOLO si la API responde bien
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+//manejar guardado del formulario de avatar
+const handleFormSubmit = (formData) => {
+  api
+    .updateUserInfo(formData.avatar)
+    .then((data) => {
+      document.querySelector(".header__image").src = data.avatar;
+      remove();
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+const handleDeleteClick = (cardInstance) => {
+  selectedCard = cardInstance;
+  formValidator3.setSubmitAction(() => {
+    api
+      .deleteCard(selectedCard._id)
+      .then(() => {
+        selectedCard.removeCard();
+        selectedCard = null;
+        formValidator3.close();
+      })
+      .catch(console.error);
+  });
+
+  formValidator3.open();
 };
 
 // Función para cerrar y limpiar el formulario de perfil
 const remove = () => {
   form.classList.remove("form-open");
+  openAvatarForm.classList.remove("form-open");
+  secondForm.classList.remove("form-open");
 
   const errorMessages = form.querySelectorAll(".form__input-error");
   errorMessages.forEach((errorMessage) => {
@@ -76,16 +125,17 @@ const edit = new PopupwithForm("#form", handleFormEdit);
 edit.setEventListeners();
 
 // Popup agregar tarjeta
-const addForm = new PopupwithForm("#formAdd");
+const addForm = new PopupwithForm("#formAdd", () => {});
 addForm.setEventListeners();
 
 //popup editar avatar
-const avatar = new PopupwithForm("#avatarForm");
+const avatar = new PopupwithForm("#avatarForm", handleFormSubmit);
 avatar.setEventListeners();
+
 //Abrir formulario de foto
 
 editAvatar.addEventListener("click", function () {
-  avatar.open();
+  openAvatarForm.classList.add("form-open");
 });
 
 // Abrir formulario de editar perfil
@@ -94,16 +144,6 @@ icon.addEventListener("click", function () {
   nameForm.value = headerSubtitle.textContent;
   aboutForm.value = headerDescription.textContent;
 });
-
-// Guardar cambios del formulario de perfil
-api.createDescription().then(() => {
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    console.log(headerSubtitle);
-  });
-});
-
-//Evento de abrir formulario de nuevas tarjetas (cards)
 
 // Abrir formulario de nuevas tarjetas
 add.addEventListener("click", function () {
@@ -126,14 +166,28 @@ secondForm.addEventListener("submit", function (e) {
 
   const name = secondForm.querySelector("#title").value;
   const link = secondForm.querySelector("#link").value;
-  api.createCard(name, link);
-  const card = new Card({ name, link }, "#gridTemplate");
-  const cardElement = card.generateCard();
 
-  document.querySelector(".grid").prepend(cardElement);
-  secondForm.classList.remove("form-open");
+  //api para crear tarjeta
+  api
+    .createCard(name, link)
+    .then((cardData) => {
+      const card = new Card(
+        {
+          name: cardData.name,
+          link: cardData.link,
+          _id: cardData._id,
+          isLiked: cardData.likes,
+        },
+        "#gridTemplate",
+        () => imagePopup.open({ link: cardData.link, name: cardData.name }),
+        handleDeleteClick,
+        handleLikeClick
+      );
+
+      document.querySelector(".grid").prepend(card.generateCard());
+    })
+    .catch(console.error);
 });
-
 
 //Array de tarjetas iniciales
 const initialCards = [
@@ -161,28 +215,66 @@ const initialCards = [
     name: "Lago di Braies",
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lago.jpg",
   },
+  {
+    name: "Venetien, Italien",
+    link: "https://www.pexels.com/es-es/foto/paisaje-escenico-otonal-de-los-dolomitas-34341417/",
+  },
+  {
+    name: "Venetien, Italien",
+    link: "https://images.pexels.com/photos/34341417/pexels-photo-34341417.jpeg",
+  },
+  {
+    name: "New York, USA",
+    link: "https://images.pexels.com/photos/35542508/pexels-photo-35542508.jpeg",
+  },
+  {
+    name: "里瓦德奥, GA, 西班牙",
+    link: "https://images.pexels.com/photos/21293118/pexels-photo-21293118.jpeg",
+  },
 ];
 
 const imagePopup = new PopupwithImage("#modalContainer");
 imagePopup.setEventListeners();
 
-const handleDeleteClick = (cardInstance) => {
-    formValidator3.open(cardInstance);
+const handleLikeClick = (cardInstance) => {
+  console.log(cardInstance);
+  if (!cardInstance._isLiked) {
+    api
+      .likeCard(cardInstance._id)
+      .then(() => {
+        cardInstance.setLikeState(true);
+      })
+      .catch(console.error);
+  } else {
+    api
+      .unlikeCard(cardInstance._id)
+      .then(() => {
+        cardInstance.setLikeState(false);
+      })
+      .catch(console.error);
+  }
 };
 
-
 api.loadCard().then((initialCards) => {
-  console.log(initialCards);
   const section = new Section({
     items: initialCards,
     renderer: (item) => {
-      const card = new Card(item, "#gridTemplate", () => 
-        imagePopup.open({ link: item.link, name: item.name }),
-      () => formValidator3.open()
+      console.log(item);
+      const card = new Card(
+        {
+          name: item.name,
+          link: item.link,
+          _id: item._id,
+          isLiked: item.isLiked,
+        },
+
+        "#gridTemplate",
+        () => imagePopup.open({ link: item.link, name: item.name }),
+        handleDeleteClick,
+        handleLikeClick
       );
 
-      const cardElement = card.generateCard();
-      section.addItem(cardElement);
+      section.addItem(card.generateCard());
     },
   });
   section.renderItems();
@@ -198,4 +290,5 @@ formValidator1._enableValidation();
 const formValidator2 = new FormValidator(secondForm);
 formValidator2._enableValidation();
 
-
+const formValidator4 = new FormValidator(openAvatarForm);
+formValidator4._enableValidation();

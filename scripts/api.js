@@ -20,7 +20,8 @@ class Api {
       .catch((err) => console.error(err));
   }
 
-  createDescription() {
+  createDescription({ name, about }) {
+    console.log(name, about);
     return fetch(`${this.url}/users/me`, {
       method: "PATCH",
       headers: {
@@ -28,10 +29,17 @@ class Api {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: "Alejandra",
-        about: "Desarrolladora",
+        name,
+        about,
       }),
-    });
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return Promise.reject(`Error: ${res.status}`);
+        }
+        return res.json();
+      })
+      .catch((err) => console.error(err));
   }
 
   loadCard() {
@@ -49,18 +57,77 @@ class Api {
 
       .catch((err) => console.error(err));
   }
+  likeCard(cardId) {
+    return fetch(`${this.url}/cards/${cardId}/likes`, {
+      method: "PUT",
+      headers: {
+        authorization: this.token,
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      if (!res.ok) {
+        return Promise.reject(`Error: ${res.status}`);
+      }
+      return res.json();
+    });
+  }
 
-  createCard(name1, url1) {
-    fetch(`${this.url}/cards/`, {
+  unlikeCard(cardId) {
+    return fetch(`${this.url}/cards/${cardId}/likes`, {
+      method: "DELETE",
+      headers: {
+        authorization: this.token,
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      if (!res.ok) {
+        return Promise.reject(`Error: ${res.status}`);
+      }
+      return res.json();
+    });
+  }
+
+  createCard(name, link) {
+    return fetch(`${this.url}/cards`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         authorization: this.token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, link }),
+    }).then((res) => {
+      if (!res.ok) {
+        return Promise.reject(`Error: ${res.status}`);
+      }
+      return res.json();
+    });
+  }
+
+  deleteCard(cardId) {
+    return fetch(`${this.url}/cards/${cardId}`, {
+      method: "DELETE",
+      headers: {
+        authorization: this.token,
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  updateUserInfo(avatarUrl) {
+    return fetch(`${this.url}/users/me/avatar`, {
+      method: "PATCH",
+      headers: {
+        authorization: this.token,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: name1,
-        link: url1,
+        avatar: avatarUrl,
       }),
+    }).then((res) => {
+      if (!res.ok) {
+        return Promise.reject(`Error: ${res.status}`);
+      }
+      return res.json();
     });
   }
 }

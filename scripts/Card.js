@@ -1,19 +1,22 @@
-import { PopupwithImage } from "./PopupwithImage.js";
-
 export class Card {
   constructor(
-    { name, link },
+    { name, link, _id, isLiked },
     cardSelector,
     handleCardClick,
-    handleDeleteClick
+    handleDeleteClick,
+    handleLikeClick
   ) {
     this._name = name;
     this._link = link;
+    this._id = _id;
+    this._isLiked = isLiked;
+
     this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick;
     this._handleDeleteClick = handleDeleteClick;
+    this._handleLikeClick = handleLikeClick;
   }
-  //clone template
+
   _getTemplate() {
     const cardTemplate = document
       .querySelector(this._cardSelector)
@@ -22,11 +25,18 @@ export class Card {
 
     return cardTemplate;
   }
-
-  //metodo que crea la card
+  setLikeState(isLiked) {
+    this._isLiked = isLiked;
+    this._likeButton.classList.toggle("grid__icon-active", this._isLiked);
+  }
 
   generateCard() {
     this._element = this._getTemplate();
+    this._likeButton = this._element.querySelector(".grid__icon");
+
+    if (this._isLiked) {
+      this._likeButton.classList.add("grid__icon-active");
+    }
 
     this._setEventListeners();
 
@@ -35,33 +45,27 @@ export class Card {
 
     return this._element;
   }
+
   removeCard() {
-    //this._element.remove();
-    //this._element = null;
+    this._element.remove();
+    this._element = null;
   }
 
+
+
   _setEventListeners() {
-    this._element
-      .querySelector(".grid__icon")
-      .addEventListener("click", function (evt) {
-        evt.target.classList.toggle("grid__icon-active");
-      });
-    //metodo boton de la basura
+    this._likeButton.addEventListener("click", () => {
+       console.log("linea 75 _setEventListeners");
+      console.log(this);
+      this._handleLikeClick(this);
+     
+    });
 
     this._element
       .querySelector(".grid__delete-icon")
       .addEventListener("click", () => {
         this._handleDeleteClick(this);
       });
-
-    //metodo que borra la card al confirmar
-
-    document
-      .querySelector(".confirmation__button")
-      .addEventListener("click", (evt) => {
-        this._element.remove();
-      });
-
     this._element
       .querySelector(".grid__image")
       .addEventListener("click", () => {
