@@ -20,9 +20,34 @@ export class PopupwithForm extends Popup {
         super.setEventListeners();
         this._popup.addEventListener("submit", (evt) => {
             evt.preventDefault();
+            console.log(this._getInputValues());
             this._handleFormSubmit(this._getInputValues());
             this.close();
         });
     }
 
    } 
+
+   /*const addCard = ({ name, link }) => {
+   
+     //api para crear tarjeta
+     api
+       .createCard(name, link)
+       .then((cardData) => {
+         const card = new Card(
+           {
+             name: cardData.name,
+             link: cardData.link,
+             _id: cardData._id,
+             isLiked: cardData.likes,
+           },
+           "#gridTemplate",
+           () => imagePopup.open({ link: cardData.link, name: cardData.name }),
+           handleDeleteClick,
+           handleLikeClick
+         );
+   
+         document.querySelector(".grid").prepend(card.generateCard());
+       })
+       .catch(console.error);
+   };*/

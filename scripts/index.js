@@ -13,8 +13,7 @@ import { PopupwithConfirmation } from "./PopupwithConfirmation.js";
 
 const icon = document.querySelector("#openForm");
 const form = document.querySelector("#form");
-const close = document.querySelector("#closeForm");
-const save = document.querySelector("#saveForm");
+
 // inputs del formulario de perfil y los elementos del header donde se reflejan
 
 const headerSubtitle = document.querySelector("#nameInput");
@@ -45,6 +44,16 @@ const userInfo = new UserInfo({
   aboutSelector: "#aboutInput",
 });
 
+const renderLoading = (isLoading, button, defaultText = "Guardar") => {
+  if (isLoading) {
+    button.textContent = "Guardando...";
+    button.disabled = true;
+  } else {
+    button.textContent = defaultText;
+    button.disabled = false;
+  }
+};
+
 api.getUserInfo().then((user) => {
   userId = user._id;
   userInfo.setUserInfo({
@@ -56,6 +65,9 @@ api.getUserInfo().then((user) => {
 
 // Manejar guardado del formulario de perfil
 const handleFormEdit = (formData) => {
+  const submitButton = form.querySelector(".form__submit");
+  renderLoading(true, submitButton);
+
   api
     .createDescription(formData)
     .then((data) => {
@@ -65,23 +77,28 @@ const handleFormEdit = (formData) => {
         name: data.name,
         about: data.about,
       });
-      remove(); // cerrar popup SOLO si la API responde bien
+      remove();
     })
-    .catch((err) => {
-      console.error(err);
+    .catch(console.error)
+    .finally(() => {
+      renderLoading(false, submitButton);
     });
 };
 
 //manejar guardado del formulario de avatar
 const handleFormSubmit = (formData) => {
+  const submitButton = openAvatarForm.querySelector(".form__submit");
+  renderLoading(true, submitButton, "Guardar");
+
   api
     .updateUserInfo(formData.avatar)
     .then((data) => {
       document.querySelector(".header__image").src = data.avatar;
       remove();
     })
-    .catch((err) => {
-      console.error(err);
+    .catch(console.error)
+    .finally(() => {
+      renderLoading(false, submitButton, "Guardar");
     });
 };
 
@@ -117,56 +134,10 @@ const remove = () => {
     inputElement.classList.remove("form__input_type_error");
   });
 
+
   form.reset();
 };
-
-// Popup editar perfil
-const edit = new PopupwithForm("#form", handleFormEdit);
-edit.setEventListeners();
-
-// Popup agregar tarjeta
-const addForm = new PopupwithForm("#formAdd", () => {});
-addForm.setEventListeners();
-
-//popup editar avatar
-const avatar = new PopupwithForm("#avatarForm", handleFormSubmit);
-avatar.setEventListeners();
-
-//Abrir formulario de foto
-
-editAvatar.addEventListener("click", function () {
-  openAvatarForm.classList.add("form-open");
-});
-
-// Abrir formulario de editar perfil
-icon.addEventListener("click", function () {
-  edit.open();
-  nameForm.value = headerSubtitle.textContent;
-  aboutForm.value = headerDescription.textContent;
-});
-
-// Abrir formulario de nuevas tarjetas
-add.addEventListener("click", function () {
-  secondForm.classList.add("form-open");
-});
-
-// Cerrar formulario de nuevas tarjetas
-closeForm.addEventListener("click", function () {
-  secondForm.classList.remove("form-open");
-  secondForm.reset();
-});
-
-// instancia popup confirmation
-const formValidator3 = new PopupwithConfirmation(".confirmation__container");
-formValidator3.setEventListeners();
-
-// Guardar nueva tarjeta
-secondForm.addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  const name = secondForm.querySelector("#title").value;
-  const link = secondForm.querySelector("#link").value;
-
+const addCard = ({ name, link }) => {
   //api para crear tarjeta
   api
     .createCard(name, link)
@@ -187,51 +158,42 @@ secondForm.addEventListener("submit", function (e) {
       document.querySelector(".grid").prepend(card.generateCard());
     })
     .catch(console.error);
+};
+
+// Popup editar perfil
+const edit = new PopupwithForm("#form", handleFormEdit);
+edit.setEventListeners();
+
+// Popup agregar tarjeta
+const popupCard = new PopupwithForm("#formAdd", addCard);
+popupCard.setEventListeners();
+
+//popup editar avatar
+const avatar = new PopupwithForm("#avatarForm", handleFormSubmit);
+avatar.setEventListeners();
+
+//Abrir formulario de foto
+
+editAvatar.addEventListener("click", function () {
+  openAvatarForm.classList.add("form-open");
 });
 
-//Array de tarjetas iniciales
-const initialCards = [
-  {
-    name: "Valle de Yosemite",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/yosemite.jpg",
-  },
-  {
-    name: "Lago Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lake-louise.jpg",
-  },
-  {
-    name: "Montañas Calvas",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/latemar.jpg",
-  },
-  {
-    name: "Parque Nacional de la Vanoise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lago.jpg",
-  },
-  {
-    name: "Venetien, Italien",
-    link: "https://www.pexels.com/es-es/foto/paisaje-escenico-otonal-de-los-dolomitas-34341417/",
-  },
-  {
-    name: "Venetien, Italien",
-    link: "https://images.pexels.com/photos/34341417/pexels-photo-34341417.jpeg",
-  },
-  {
-    name: "New York, USA",
-    link: "https://images.pexels.com/photos/35542508/pexels-photo-35542508.jpeg",
-  },
-  {
-    name: "里瓦德奥, GA, 西班牙",
-    link: "https://images.pexels.com/photos/21293118/pexels-photo-21293118.jpeg",
-  },
-];
+// Abrir formulario de editar perfil
+icon.addEventListener("click", function () {
+  edit.open();
+  nameForm.value = headerSubtitle.textContent;
+  aboutForm.value = headerDescription.textContent;
+});
+
+// Abrir formulario de nuevas tarjetas
+add.addEventListener("click", () => {
+  popupCard.open();
+});
+
+
+// instancia popup confirmation
+const formValidator3 = new PopupwithConfirmation(".confirmation__container");
+formValidator3.setEventListeners();
 
 const imagePopup = new PopupwithImage("#modalContainer");
 imagePopup.setEventListeners();
