@@ -4,7 +4,7 @@ import { Card } from "./Card.js";
 import { closeModal } from "./utils.js";
 import { PopupwithForm } from "./PopupwithForm.js";
 import { Section } from "./Section.js";
-import { UserInfo } from "./userinfo.js";
+import { UserInfo } from "./Userinfo.js";
 import { PopupwithImage } from "./PopupwithImage.js";
 import { api } from "./api.js";
 import { PopupwithConfirmation } from "./PopupwithConfirmation.js";
